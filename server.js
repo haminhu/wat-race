@@ -65,6 +65,11 @@ io.on("connection", (socket) => {
 
     const room = getRoom(roomId);
 
+    // ✅ 서버가 재시작돼서 메모리가 비어도, WAT 방은 들어오는 순간 항상 비번을 복구
+if (roomId === DEFAULT_ROOM_ID && !room.hostPassHash) {
+  room.hostPassHash = sha256(DEFAULT_HOST_PASSWORD);
+}
+
     // 호스트 입장 체크
     if (asHost) {
       if (room.hostSocketId) return socket.emit("errorMsg", "이미 호스트가 있습니다.");
