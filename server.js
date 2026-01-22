@@ -1,3 +1,7 @@
+const DEFAULT_ROOM_ID = "WAT";
+const DEFAULT_HOST_PASSWORD = "000794";
+
+
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
@@ -117,6 +121,13 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+// 🔐 서버 시작 시 WAT 방 자동 생성
+(function initDefaultRoom() {
+  const room = getRoom(DEFAULT_ROOM_ID);
+  room.hostPassHash = sha256(DEFAULT_HOST_PASSWORD);
+  console.log("✅ Default room WAT initialized");
+})();
 
 app.get("/", (req, res) => res.send("OK"));
 server.listen(process.env.PORT || 3000, () => console.log("Server running"));
