@@ -29,6 +29,13 @@ function getRoom(roomId) {
   return rooms.get(roomId);
 }
 
+// ✅ 서버 시작 시 기본 방(WAT) + 호스트 비번 자동 세팅
+(function initDefaultRoom() {
+  const room = getRoom(DEFAULT_ROOM_ID);
+  room.hostPassHash = sha256(DEFAULT_HOST_PASSWORD);
+  console.log("✅ Default room initialized:", DEFAULT_ROOM_ID);
+})();
+
 function pickUniqueIndices(total, k) {
   const arr = Array.from({ length: total }, (_, i) => i);
   for (let i = total - 1; i > 0; i--) {
